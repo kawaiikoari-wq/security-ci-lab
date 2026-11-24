@@ -1,9 +1,9 @@
-import hashlib, subprocess, os
+import hashlib, shlex, subprocess, os
  
-API_KEY = "sk_live_9f3b2a7c41e8d6"   # зашитый секрет
+API_KEY = os.environ.get("API_KEY")   # секрет берём из окружения, не из кода
  
 def run(cmd):
-    return subprocess.call(cmd, shell=True)      # shell=True — инъекция команд
+    return subprocess.call(shlex.split(cmd))     # без shell=True
  
-def weak_hash(p):
-    return hashlib.md5(p.encode()).hexdigest()   # слабый хэш MD5
+def strong_hash(p):
+    return hashlib.sha256(p.encode()).hexdigest()
